@@ -22,20 +22,24 @@ public class PhoneController {
     @Autowired
     PhoneService phoneService;
 
-    @ApiOperation(value = "getArtistDetails", notes = "The API returns artist suggestions if multiple matches or releases if only one match", nickname = "artistSearch")
+    @ApiOperation(value = "getPhoneNumbers", notes = "The API returns all phone numbers or numbers of specific customer", nickname = "getPhoneNumbers")
     @ApiResponses(value = {
             @ApiResponse(code = 500, message = "Server error"),
             @ApiResponse(code = 404, message = "Service not found"),
             @ApiResponse(code = 200, message = "Successful retrieval", responseContainer = "List")})
     @GetMapping("/phonenumbers")
-    public List<Long> getPhoneNumbers(@ApiParam(value = "search keyword for name of the artist",
-            required = true, example = "Sheeran") @RequestParam(required = false) String custId) {
+    public List<Long> getPhoneNumbers(@RequestParam(required = false) String custId) {
         return phoneService.getPhoneNumbers(custId);
     }
 
+    @ApiOperation(value = "activatePhoneNumber", notes = "The API activates/deactivates phone numbers", nickname = "activatePhoneNumber")
+    @ApiResponses(value = {
+            @ApiResponse(code = 500, message = "Server error"),
+            @ApiResponse(code = 404, message = "Service not found"),
+            @ApiResponse(code = 200, message = "Successful retrieval", responseContainer = "List")})
+
     @GetMapping("/phonenumbers/{number}")
-    public void activatePhoneNumber(@ApiParam(value = "search keyword for name of the artist",
-            required = true, example = "Sheeran") @RequestParam boolean status, @PathVariable Long number) {
+    public void activatePhoneNumber(@RequestParam boolean status, @PathVariable Long number) {
          phoneService.activatePhoneNumber(number , status);
     }
 
